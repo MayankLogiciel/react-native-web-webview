@@ -109,7 +109,11 @@ export class WebView extends Component {
   render() {
     if (this.props.newWindow) {
       return (
-        <View style={styles.loadingContainer}>
+        <View style={{
+			flex: 1,
+			alignItems: 'center',
+			justifyContent: 'center',
+		  }}>
           <ActivityIndicator />
         </View>
       );
@@ -117,14 +121,19 @@ export class WebView extends Component {
 
     const { title, source, onLoad, scrollEnabled } = this.props;
     const styleObj = StyleSheet.flatten(this.props.style);
-    return createElement('iframe', {
+    return React.createElement('iframe', {
       title,
       ref: this.setRef,
       src: !source.method ? source.uri : undefined,
       srcDoc: this.handleInjectedJavaScript(this.state.html || source.html),
       width: styleObj && styleObj.width,
       height: styleObj && styleObj.height,
-      style: [styles.iframe, scrollEnabled && styles.noScroll, this.props.style],
+      style: {
+		width: '100%',
+	  	height: '100%',
+		borderWidth: 0,
+		...this.props.style
+	  },
       allowFullScreen: true,
       allowpaymentrequest: 'true',
       frameBorder: '0',
@@ -133,19 +142,3 @@ export class WebView extends Component {
     });
   }
 }
-
-const styles = StyleSheet.create({
-  loadingContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  iframe: {
-    width: '100%',
-    height: '100%',
-    borderWidth: 0,
-  },
-  noScroll: {
-    overflow: 'hidden',
-  },
-});
