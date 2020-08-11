@@ -11,7 +11,7 @@ export class WebView extends Component {
 
   constructor(props) {
     super(props);
-    this.handleSource(props.source, props.newWindow);
+    this.handleSource(props.source, props.newWindow);    
   }
 
   setRef = ref => this.frameRef = ref;
@@ -91,7 +91,7 @@ export class WebView extends Component {
   onMessage = nativeEvent => this.props.onMessage({ nativeEvent });
 
   postMessage = (message, origin) => {
-    this.frameRef.contentWindow.postMessage(message, origin);
+    // this.frameRef.contentWindow.postMessage(message, origin);
   };
 
   handleInjectedJavaScript = html => {
@@ -119,11 +119,11 @@ export class WebView extends Component {
       );
     }
 
-    const { title, source, onLoad, scrollEnabled } = this.props;
+    const { title, source, onLoad, scrollEnabled, frameRef } = this.props;
     const styleObj = StyleSheet.flatten(this.props.style);
     return React.createElement('iframe', {
       title,
-      ref: this.setRef,
+      ref: frameRef,
       src: !source.method ? source.uri : undefined,
       srcDoc: this.handleInjectedJavaScript(this.state.html || source.html),
       width: styleObj && styleObj.width,
